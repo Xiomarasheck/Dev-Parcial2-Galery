@@ -49,6 +49,9 @@
 #imagepreview {
     max-width: 100%;
     height: 800px !important;
+    align-content: center;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .item {
