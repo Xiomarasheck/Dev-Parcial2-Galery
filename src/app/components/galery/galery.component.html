@@ -1,0 +1,50 @@
+<!-- main app container -->
+<div class="card text-center m-3">
+    <h3 class="card-header">Galery</h3>
+    <div class="card-footer col-md-12">
+      <div class="row">
+        <div class="col">
+          <pagination-controls (pageChange)="pageActual = $event"></pagination-controls>
+        </div>
+        <div class="col">
+          <input class="form-control" type="search" placeholder="Autor" aria-label="Search" name="filterItem" [(ngModel)] = "filterItem" >
+        </div>
+        <div class="col">
+          <input class="form-control mr-sm-2" type="number" placeholder="Pages" aria-label="Search" (keyup)="Pages(escala.value)" #escala>
+        </div>
+        </div>
+    </div>
+</div>
+
+<!--Galery-->
+<div class="Galery">
+  <div class="row ">
+    <div class="item col-xl-3 col-lg-4 col-md-4 col-sm-6 col-xs-12" *ngFor="let item of items | filter:filterItem  | paginate: { itemsPerPage: numItems, currentPage: pageActual }">
+      <img id="imageresource" src="{{item.download_url}}" alt="{{item.author}}" class="img-fluid card-img-top" (click) = "show(item.download_url)" height="400">
+      <div class="card-footer">
+        <small class="text-muted"># {{item.id}} - {{item.author}} <a class="btn btn-secondary btn-sm btn-block" href="{{item.download_url}}" target="_blank" role="button">Download</a></small>
+      </div>
+    </div>
+  </div>
+</div>
+<pagination-controls (pageChange)="pageActual = $event"></pagination-controls>
+
+<!--Modal-->
+<div [style.display]="showModal ? 'block' : 'none'" class="modal" id="imagemodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-xl">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title" id="myModalLabel">Image preview</h4><button type="button" class="btn btn-default" data-dismiss="modal" (click) = "hide()">Close</button>
+    </div>
+    <div class="modal-body">
+      <center>
+        <img src="{{urlModal}}" id="imagepreview" style="width: 1100px;">
+      </center>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-default" data-dismiss="modal" (click) = "hide()">Close</button>
+    </div>
+  </div>
+</div>
+</div>
+
