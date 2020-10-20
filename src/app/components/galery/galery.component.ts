@@ -15,6 +15,10 @@ export class GaleryComponent implements OnInit {
   showModal: boolean;
   numItems:number = 8;
   pageActual:number = 1; 
+  viewMessage:boolean = false;
+  itemsApi:number = 100;
+  pageApi:number = 2;
+
   
   /* Filter data */
   filterItem = '';
@@ -25,7 +29,11 @@ export class GaleryComponent implements OnInit {
   constructor(private service : ImagesService){}
 
   ngOnInit(): void {
-    this.service.getJson("https://picsum.photos/v2/list").subscribe((res : any) => {
+    this.getData(this.itemsApi,this.pageApi);
+  }
+
+  getData(numImages:number,page:number){
+    this.service.getJson("https://picsum.photos/v2/list?page=" + page + "&limit=" + numImages).subscribe((res : any) => {
       console.log(res);
       this.items = res;  
     });
@@ -46,12 +54,42 @@ export class GaleryComponent implements OnInit {
     this.showModal = false;
   }
 
-  Pages(pages:number) {
+  pages(pages:number) {
     if (pages > 0){
       this.numItems = pages;
     }else{
       this.numItems = 8;
     }
+  }
+
+  numImages(pages:number) {
+    if (pages > 0){
+      this.getData(pages,this.pageApi);
+    }else{
+      this.getData(this.itemsApi,this.pageApi);
+    }
+  }
+
+  currentPage(page:number) {
+    if (page > 0){
+      this.getData(this.itemsApi,page);
+      if (this.items.length = 0){
+        this.viewMessage = true;
+      }
+    }else{
+      this.getData(this.itemsApi,this.pageApi);
+      if (this.items.length = 0){
+        this.viewMessage = true;
+      }
+    }
+  }
+
+  isEmpty(items){
+    if(items.length = 0){
+      return false;
+    }
+    return true;
+
   }
 
 }
